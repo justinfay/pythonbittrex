@@ -1,3 +1,4 @@
+#!usr/bin/env/python
 """
 bittrex.com api wrapper.
 """
@@ -26,6 +27,7 @@ SELL_MARKET = "https://bittrex.com/api/v1.1/market/sellmarket"
 CANCEL = "https://bittrex.com/api/v1.1/market/cancel"
 GET_OPEN_ORDERS = "https://bittrex.com/api/v1.1/market/getopenorders"
 GET_BALANCE = "https://bittrex.com/api/v1.1/account/getbalance"
+GET_BALANCES = "https://bittrex.com/api/v1.1/account/getbalances"
 GET_ORDER = "https://bittrex.com/api/v1.1/account/getorder"
 GET_ORDER_SUMMARY = "https://bittrex.com/api/v1.1/account/getorderhistory"
 
