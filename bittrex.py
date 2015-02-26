@@ -9,6 +9,7 @@ import time
 import urllib
 import urllib2
 import urlparse
+import textwrap
 
 from keys import API_KEY, API_SECRET
 
@@ -155,6 +156,9 @@ class BittrexAPI(object):
         params = dict(uuid=uuid)
         return self._query(GET_ORDER, params, public=False)
 
+    def getbalances(self):
+        return self._query(GET_BALANCES, public=False)
+
     def getorderhistory(self, market=None, count=None):
         params = dict()
         if market is not None:
@@ -190,13 +194,16 @@ def usage():
                       sellmarket [market] [quantity]
                       cancel [uuid]
                       getopenorders [market]
-"""
+                      getbalance [currency]
+                      getbalances
+                      getorder [uuid]
+    """
 
 
 if __name__ == "__main__":
     import sys
     if len(sys.argv) == 1:
-        sys.stdout.write(usage())
+        sys.stdout.write(textwrap.dedent(usage()))
         sys.exit(1)
     response = runner(sys.argv[1:])
     sys.stdout.write(str(response) + '\n')
