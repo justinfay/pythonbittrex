@@ -9,5 +9,5 @@ setup(name='bittrex',
     author_email='mail@justinfay.me',
     url='http://justinfay.me',
     py_modules=['bittrex'],
-    scripts=['bittrex.py'],
+    scripts=['bittrex'],
 )

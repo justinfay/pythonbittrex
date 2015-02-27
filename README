@@ -1,0 +1,63 @@
+pythonbittrex
+=============
+
+A python wrapper for the bittrex.com api. Under developement.
+
+
+Overview
+========
+
+A simple wrapper for the `bittrex`_ API. Which can be used
+to build trading bots or as a simple terminal ticker
+using the built in command line runner.
+
+
+Quickstart
+==========
+
+To get started quickey with the module, install it and run
+using the simple command line runner::
+
+    python setup.py install
+    watch 'bittrex getticker btc-doge| python -m json.tool'
+
+
+API KEYS
+========
+
+To enable the usage of private API methods an ini style file
+is required with the folling format::
+
+    [bittrex]
+    key=bittrex_api_key
+    secret=bittrex_api_secret
+
+By default pythonbittrex witll look for a `.bittrex.ini` file
+in the current users home directory. An alternative location
+for this file can be specified by setting an environment
+variable `BITTREX_KEY_FILE` which points to the full path
+of the file.
+
+NOTE: Your bittex key file contains sensitive information so
+restrictive permissions should be set for the file::
+
+    chmod 600 ~/.bittrex.ini
+
+pythonbittrex will print a warning if this file doesn't exists.
+
+
+Usage
+=====
+
+To use the API client in your own scripts::
+
+    from bittrex import BittrexAPI
+    api = BittrexAPI(apt_key=key, api_secret=secret)
+    data = api.getopenorders()
+
+
+By default all return values are the Python `dict` type. To get
+raw JSON response pass `raw=True` to the `BittrexAPI` constructor.
+
+
+.. _bittrex: https://bittrex.com

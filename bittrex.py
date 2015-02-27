@@ -1,17 +1,31 @@
-#!usr/bin/env/python
+#!/usr/bin/env python
 """
 bittrex.com api wrapper.
 """
+import ConfigParser
 import hashlib
 import hmac
 import json
+import os
+import sys
 import time
 import urllib
 import urllib2
 import urlparse
 import textwrap
 
-from keys import API_KEY, API_SECRET
+
+_KEY_FILE = os.environ.get(
+    'BITTREX_KEY_FILE',
+    os.path.join(os.path.expanduser('~'), '.bittrex.ini'))
+_config = ConfigParser.SafeConfigParser()
+if not _config.read(_KEY_FILE):
+    sys.stderr.write('Key file not read, private methods will not work.\n')
+    API_KEY = None
+    API_SECRET = None
+else:
+    API_KEY = _config.get('bittrex', 'key')
+    API_SECRET = _config.get('bittrex', 'secret')
 
 
 GET_MARKETS_URI = "https://bittrex.com/api/v1.1/public/getmarkets"
@@ -63,6 +77,12 @@ class BittrexAPIException(Exception):
     """
 
 
+class NoAPIKeys(Exception):
+    """
+    Exception raised when a private method called without credentials.
+    """
+
+
 class BittrexAPI(object):
     """
     bittrex class which wraps the bittrex API.
@@ -74,6 +94,8 @@ class BittrexAPI(object):
         self._raw = raw
 
     def _query(self, uri, params=None, public=True):
+        if public is False and not all((self._api_key, self._api_secret)):
+            raise NoAPIKeys
         params = params if params else {}
         headers = {}
         if public is False:

@@ -1,0 +1,5 @@
+*.pyc
+*.ini
+build/*
+env/*
+*.swp
