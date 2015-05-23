@@ -45,6 +45,7 @@ GET_BALANCE = "https://bittrex.com/api/v1.1/account/getbalance"
 GET_BALANCES = "https://bittrex.com/api/v1.1/account/getbalances"
 GET_ORDER = "https://bittrex.com/api/v1.1/account/getorder"
 GET_ORDER_SUMMARY = "https://bittrex.com/api/v1.1/account/getorderhistory"
+WITHDRAW = "https://bittrex.com/api/v1.1/account/withdraw"
 
 
 def get(url, headers=None):
@@ -189,6 +190,12 @@ class BittrexAPI(object):
             params['count'] = count
         return self._query(GET_ORDER_SUMMARY, params, public=False)
 
+    def withdraw(self, currency, quantity, address, paymentid=None):
+        params = dict(currency=currency, quantity=quantity, address=address)
+        if paymentid is not None:
+            params['paymentid'] = paymentid
+        return self._query(WITHDRAW, params, public=False)
+
 
 def runner(*args):
     """
@@ -219,6 +226,7 @@ def usage():
                       getbalance [currency]
                       getbalances
                       getorder [uuid]
+                      withdraw [currency] [quantity] [address] [paymentid]
     """
 
 
@@ -227,6 +235,10 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         sys.stdout.write(textwrap.dedent(usage()))
         sys.exit(1)
-    response = runner(sys.argv[1:])
+    try:
+        response = runner(sys.argv[1:])
+    except Exception as exc:
+        sys.stdout.write(str(exc) + '\n')
+        sys.exit(1)
     sys.stdout.write(str(response) + '\n')
     sys.exit(0)
